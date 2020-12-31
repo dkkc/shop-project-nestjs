@@ -14,7 +14,7 @@ import {
   GetTotalPrice,
   ListProductsInBasket,
   RemoveProductFromBasket,
-} from '../shop/interface/basket';
+} from '../interface/basket';
 
 @Controller('basket')
 export class BasketController {
