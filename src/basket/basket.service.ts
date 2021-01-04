@@ -39,7 +39,6 @@ export class BasketService {
   removeItem(index: number): RemoveProductFromBasket {
     const { items } = this;
     if (index < 0 || index >= items.length) {
-      console.log(`index ${index} nie istnieje`);
       return {
         isSuccess: false,
       };
