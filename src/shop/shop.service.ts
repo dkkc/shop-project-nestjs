@@ -1,12 +1,13 @@
-import {forwardRef, Inject, Injectable} from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { GetListOfProducts } from '../interface/product';
-import { BasketService } from "../basket/basket.service";
+import { BasketService } from '../basket/basket.service';
 
 @Injectable()
 export class ShopService {
-
-  constructor(@Inject(forwardRef(() => BasketService)) private basketService: BasketService) {
-  }
+  constructor(
+    @Inject(forwardRef(() => BasketService))
+    private basketService: BasketService,
+  ) {}
   getProducts(): GetListOfProducts {
     return [
       {
@@ -24,7 +25,7 @@ export class ShopService {
         description: 'Najlepsze tylko od krowy',
         price: 5 - this.basketService.countPromo(),
       },
-    ]
+    ];
   }
 
   hasProducts(name: string): boolean {

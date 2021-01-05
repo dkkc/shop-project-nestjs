@@ -1,7 +1,14 @@
-import {Controller, Get, HostParam, Inject, Param, Redirect, Scope} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HostParam,
+  Inject,
+  Param,
+  Redirect,
+  Scope,
+} from '@nestjs/common';
 import { ShopService } from './shop.service';
 import { GetListOfProducts } from '../interface/product';
-
 
 // @Controller('shop')
 @Controller({
@@ -10,15 +17,14 @@ import { GetListOfProducts } from '../interface/product';
   // scope: Scope.REQUEST // dla każdego zapytania stworzony będzie osobny objekt
 })
 export class ShopController {
-
   // onModuleInit(){
   // }
 
   onApplicationBootstrap() {
-    console.log('Załadowany')
+    console.log('Załadowany');
   }
   onApplicationShutDown() {
-    console.log('Apka zaraz zakończy działanie')
+    console.log('Apka zaraz zakończy działanie');
   }
   constructor(@Inject(ShopService) private shopService: ShopService) {}
 
@@ -35,6 +41,6 @@ export class ShopController {
     //   url,
     //   statusCode: 301
     // }
-    return `Witaj w sklepie ${hostName}`
+    return `Witaj w sklepie ${hostName}`;
   }
 }
