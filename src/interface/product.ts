@@ -5,3 +5,4 @@ export interface Product {
 }
 
 export type GetListOfProducts = Product[];
+export type GetOneProductResponse = Product;

@@ -8,7 +8,7 @@ import {
   Scope,
 } from '@nestjs/common';
 import { ShopService } from './shop.service';
-import { GetListOfProducts } from '../interface/product';
+import { GetListOfProducts, GetOneProductResponse } from "../interface/product";
 
 // @Controller('shop')
 @Controller({
@@ -29,8 +29,13 @@ export class ShopController {
   constructor(@Inject(ShopService) private shopService: ShopService) {}
 
   @Get('/')
-  geListOfProducts(): GetListOfProducts {
+  geListOfProducts(): Promise<GetListOfProducts> {
     return this.shopService.getProducts();
+  }
+
+  @Get('/:id')
+  getOneProduct(@Param('id') id: string): Promise<GetOneProductResponse> {
+    return this.shopService.getOneProduct(id);
   }
 
   @Get('/welcome')

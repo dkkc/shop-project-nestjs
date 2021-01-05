@@ -2,8 +2,8 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class ShopItem {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column({
     length: 60,
@@ -25,4 +25,9 @@ export class ShopItem {
     scale: 2,
   })
   price: number;
+
+  @Column({
+    default: () => 'CURRENT_TIMESTAMP',
+  })
+  createdAt: Date;
 }
