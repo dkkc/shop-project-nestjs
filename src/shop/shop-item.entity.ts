@@ -12,7 +12,7 @@ export class ShopItem {
 
   @Column({
     type: 'text',
-    default: '(brak)',
+    // default: '(brak)',
     // length: 10000,
     // default: null ,
     // nullable: true,
