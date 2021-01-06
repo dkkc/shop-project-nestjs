@@ -34,6 +34,11 @@ export class ShopController {
     return this.shopService.getProducts();
   }
 
+  @Get('/find/:searchTerm')
+  advancedFindItemTest(@Param('searchTerm') searchTerm: string): Promise<GetListOfProducts> {
+    return this.shopService.findProducts(searchTerm);
+  }
+
   @Get('/:id')
   getOneProduct(@Param('id') id: string): Promise<GetOneProductResponse> {
     return this.shopService.getOneProduct(id);
@@ -49,14 +54,14 @@ export class ShopController {
     return this.shopService.createDummyProduct();
   }
 
-  @Get('/welcome')
-  // @Redirect()
-  testRedirect(@HostParam('name') hostName: string) {
-    // const url = Number(age) > 18 ? '/site' : '/block';
-    // return {
-    //   url,
-    //   statusCode: 301
-    // }
-    return `Witaj w sklepie ${hostName}`;
-  }
+  // @Get('/welcome')
+  // // @Redirect()
+  // testRedirect(@HostParam('name') hostName: string) {
+  //   // const url = Number(age) > 18 ? '/site' : '/block';
+  //   // return {
+  //   //   url,
+  //   //   statusCode: 301
+  //   // }
+  //   return `Witaj w sklepie ${hostName}`;
+  // }
 }

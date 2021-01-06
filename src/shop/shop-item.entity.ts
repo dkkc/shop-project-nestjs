@@ -1,18 +1,18 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {BaseEntity, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity()
-export class ShopItem {
+export class ShopItem extends  BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column({
-    length: 60,
+    length: 25,
   })
   name: string;
 
   @Column({
     type: 'text',
-    // default: '(brak)',
+    default: '(brak)',
     // length: 10000,
     // default: null ,
     // nullable: true,

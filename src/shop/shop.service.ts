@@ -8,12 +8,12 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class ShopService {
   constructor(@Inject(forwardRef(() => BasketService)) private basketService: BasketService,
-    @InjectRepository(ShopItem)
-    private shopItemRepository: Repository<ShopItem>,
   ) {}
 
   async getProducts(): Promise<GetListOfProducts> {
-    return await this.shopItemRepository.find();
+    // return await this.shopItemRepository.find();
+    // Active Record
+    return await ShopItem.find();
   }
   // getProducts(): GetListOfProducts {
   //   return [
@@ -39,13 +39,13 @@ export class ShopService {
     return (await this.getProducts()).some((item) => item.name === name);
   }
   async getOneProduct(id: string): Promise<GetOneProductResponse> {
-    return await this.shopItemRepository.findOneOrFail(id);
+    return await ShopItem.findOneOrFail(id);
   }
   async getPriceOfProduct(name): Promise<number> {
     return (await this.getProducts()).find((item) => item.name === name).price;
   }
   async removedProduct(id: string) {
-    return await this.shopItemRepository.delete(id);
+    return await ShopItem.delete(id);
   }
 
   async createDummyProduct(): Promise<CreateProductResponse> {
@@ -54,22 +54,30 @@ export class ShopService {
     newItem.name = 'Okocim Mocne 0.5L';
     newItem.description = 'Okcim czrne dubeltowe';
 
-    await this.shopItemRepository.save(newItem);
-
+    // await this.shopItemRepository.save(newItem);
+    await newItem.save() // encja sama się zapisuje gdy diedziczy po BaseEntity - nie ma potzreby używać repozytorium
     return newItem;
   }
 
   async addBoughtCounter(id: string) {
-    await this.shopItemRepository.update(id, {
+    await ShopItem.update(id, {
       wasEverBought: true,
     })
-    const item = await this.shopItemRepository.findOneOrFail(id);
+    const item = await ShopItem.findOneOrFail(id);
     item.boughtCounter++;
-    await this.shopItemRepository.update(id, {
-      wasEverBought: true,
-    })
-    await this.shopItemRepository.save(item);
+    await item.save();
   }
 
+  async findProducts(searchTerm: string): Promise<GetListOfProducts> {
+    return await ShopItem.find({
+      order: {
+        price: 'DESC'
+      }
+      // select: ['id', 'price'],
+      // where: {
+      //   description: searchTerm
+      // }
 
+    })
+  }
 }
