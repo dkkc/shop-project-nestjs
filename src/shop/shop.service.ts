@@ -1,13 +1,17 @@
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import {CreateProductResponse, GetListOfProducts, GetOneProductResponse} from "../interface/product";
+import {
+  CreateProductResponse,
+  GetListOfProducts,
+  GetOneProductResponse,
+} from '../interface/product';
 import { BasketService } from '../basket/basket.service';
-import { InjectRepository } from '@nestjs/typeorm';
 import { ShopItem } from './shop-item.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class ShopService {
-  constructor(@Inject(forwardRef(() => BasketService)) private basketService: BasketService,
+  constructor(
+    @Inject(forwardRef(() => BasketService))
+    private basketService: BasketService,
   ) {}
 
   async getProducts(): Promise<GetListOfProducts> {
@@ -15,25 +19,6 @@ export class ShopService {
     // Active Record
     return await ShopItem.find();
   }
-  // getProducts(): GetListOfProducts {
-  //   return [
-  //     {
-  //       name: 'Jogurt',
-  //       description: 'Jogobella naklepszym jogurtem',
-  //       price: 1.2,
-  //     },
-  //     {
-  //       name: 'Chleb',
-  //       description: 'Pieczywo pełnoziarniste',
-  //       price: 1.7,
-  //     },
-  //     {
-  //       name: 'Mleko',
-  //       description: 'Najlepsze tylko od krowy',
-  //       price: 5 - this.basketService.countPromo(),
-  //     },
-  //   ];
-  // }
 
   async hasProducts(name: string): Promise<boolean> {
     return (await this.getProducts()).some((item) => item.name === name);
@@ -55,14 +40,14 @@ export class ShopService {
     newItem.description = 'Okcim czrne dubeltowe';
 
     // await this.shopItemRepository.save(newItem);
-    await newItem.save() // encja sama się zapisuje gdy diedziczy po BaseEntity - nie ma potzreby używać repozytorium
+    await newItem.save(); // encja sama się zapisuje gdy diedziczy po BaseEntity - nie ma potzreby używać repozytorium
     return newItem;
   }
 
   async addBoughtCounter(id: string) {
     await ShopItem.update(id, {
       wasEverBought: true,
-    })
+    });
     const item = await ShopItem.findOneOrFail(id);
     item.boughtCounter++;
     await item.save();
@@ -71,13 +56,12 @@ export class ShopService {
   async findProducts(searchTerm: string): Promise<GetListOfProducts> {
     return await ShopItem.find({
       order: {
-        price: 'DESC'
-      }
+        price: 'DESC',
+      },
       // select: ['id', 'price'],
       // where: {
       //   description: searchTerm
       // }
-
-    })
+    });
   }
 }
